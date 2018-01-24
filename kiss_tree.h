@@ -8,12 +8,15 @@ struct KissNode {
     struct KissNode* left_ptr;
     struct KissNode* right_ptr;
 
-    int count;
+    int data;
 };
 
 
-KissNode* new_KissNode();
-void destroy_KissNode(KissNode *);
+KissNode* new_KissNode(int key);
+void destroy_KissNode(KissNode*);
+
+KissNode* insert_kiss_node(KissNode*, int);
+
 
 
 void kiss_tree_test_driver();
