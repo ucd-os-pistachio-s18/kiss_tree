@@ -16,6 +16,7 @@ KissNode* new_KissNode(int key);
 void destroy_KissNode(KissNode*);
 
 KissNode* insert_kiss_node(KissNode*, int);
+void destroy_kiss_tree(KissNode*, KissNode*);
 
 
 

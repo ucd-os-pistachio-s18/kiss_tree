@@ -22,23 +22,30 @@ KissNode* new_KissNode(int key)
 
 void destroy_KissNode(KissNode *node_ptr)
 {
-    printf("DEBUG:  Destroying node\n");
+
+    if (node_ptr->left_ptr != NULL || node_ptr->right_ptr != NULL)
+    {
+        printf("ERROR:  NODE HAS ACTIVE CHILDREN\n");
+    }
+    else
+        printf("DEBUG:  Destroying node with key:  %d \n", node_ptr->data);
+
+    // DESTROY DATA
+    node_ptr->data = 0;
+
+    // DEALLOCATE NODE
     free(node_ptr);
-//    printf("DEBUG:  Destroyed node\n");
+
+    printf("DEBUG:  DESTROYED NODE.\n\n");
 }
 
 
 KissNode* insert_kiss_node(KissNode* root_ptr, int key)
 {
-
     if (root_ptr == NULL)
     {
         // CASE: NO NODE EXISTS AT ROOT; MAKE A NEW NODE WITH KEY
         printf("DEBUG:  Unable to find key:  %d\n", key);
-
-//        KissNode* newNode_ptr;
-//        newNode_ptr = new_KissNode(key);
-
         root_ptr = new_KissNode(key);
 
         // RECURSION IS COMPLETE.  RETURN NODE ADDRESS
@@ -78,6 +85,38 @@ KissNode* insert_kiss_node(KissNode* root_ptr, int key)
 }
 
 
+void destroy_kiss_tree(KissNode* node_ptr, KissNode* parent_ptr)
+{
+    printf("DEBUG:  Attempting to destroy node with key:  %d \n", node_ptr->data);
+
+    if (node_ptr->left_ptr != NULL)
+    {
+        printf("DEBUG:  Going left of node with key:  %d \n", node_ptr->data);
+        destroy_kiss_tree(node_ptr->left_ptr, node_ptr);
+    }
+
+    if (node_ptr->right_ptr != NULL)
+    {
+        printf("DEBUG:  Going right of node with key:  %d \n", node_ptr->data);
+        destroy_kiss_tree(node_ptr->right_ptr, node_ptr);
+    }
+
+    if (parent_ptr != NULL)
+    {
+        if (parent_ptr->left_ptr != NULL)
+            parent_ptr->left_ptr = NULL;
+        else if (parent_ptr->right_ptr != NULL)
+            parent_ptr->right_ptr = NULL;
+        else
+            printf("ERROR:  UNABLE TO SET CHILDREN NULL IN PARENT\n");
+
+    }
+
+    // BOTH CHILDREN NOW NULL; DELETE NODE
+    printf("\nDEBUG:  Initiating destruction of node with key:  %d \n", node_ptr->data);
+    destroy_KissNode(node_ptr);
+    node_ptr = NULL;
+}
 
 
 void kiss_tree_test_driver()
@@ -85,14 +124,15 @@ void kiss_tree_test_driver()
     KissNode* root;
     int newKey;
 
-    newKey = 50;
-    root = new_KissNode(newKey);
-
 //    int intArray[] = {3, 1, 2, 7, 6, 9, 8, 11};
-    int intArray[] = {10, 20, 15, 18, 16, 17};
-    int max = (sizeof(intArray)/ sizeof(newKey));
+//    int intArray[] = {50, 10, 20, 15, 18, 16, 17};
+    int intArray[] = {4,2,1,3,6,5,7};
+//    int intArray[] = {4,2,1,3};
 
-    for (int index = 0; index < max; ++index)
+    root = new_KissNode(intArray[0]);
+
+    int max = (sizeof(intArray)/ sizeof(newKey));
+    for (int index = 1; index < max; ++index)
     {
         newKey =  intArray[index];
         printf("DEBUG:  Inserting key:  %d \n", newKey);
@@ -100,5 +140,5 @@ void kiss_tree_test_driver()
     }
 
     printf("\nDEBUG:  Destroying tree...\n\n");
-    destroy_KissNode(root);
+    destroy_kiss_tree(root, NULL);
 }
