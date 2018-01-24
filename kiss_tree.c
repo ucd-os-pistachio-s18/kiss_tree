@@ -36,9 +36,10 @@ KissNode* insert_kiss_node(KissNode* root_ptr, int key)
         // CASE: NO NODE EXISTS AT ROOT; MAKE A NEW NODE WITH KEY
         printf("DEBUG:  Unable to find key:  %d\n", key);
 
-        KissNode* newNode_ptr;
-        newNode_ptr = new_KissNode(key);
+//        KissNode* newNode_ptr;
+//        newNode_ptr = new_KissNode(key);
 
+        root_ptr = new_KissNode(key);
 
         // RECURSION IS COMPLETE.  RETURN NODE ADDRESS
     }
@@ -50,14 +51,14 @@ KissNode* insert_kiss_node(KissNode* root_ptr, int key)
             // CASE: KEY FOUND IN THE ROOT NODE
 
             /* DO STUFF HERE */
-            printf("DEBUG:  Found key in tree:  %d \n", key);
+            printf("DEBUG:  Found key in tree:  %d \n\n", key);
 
             // RECURSION IS COMPLETE.  RETURN NODE ADDRESS
         }
         else if (key < root_ptr->data)
         {
             // CASE: KEY IS LESS THAN THE ROOT NODE DATA
-            printf("DEBUG:  Searching left branch for key:  %d \n", key);
+            printf("DEBUG:  Searching left branch of node:  %d  for key:  %d \n", root_ptr->data, key);
 
             // RECURSIVELY SEARCH THE LEFT BRANCH
             root_ptr->left_ptr = insert_kiss_node(root_ptr->left_ptr, key);
@@ -65,10 +66,10 @@ KissNode* insert_kiss_node(KissNode* root_ptr, int key)
         else if (key > root_ptr->data)
         {
             // CASE: INPUT DATA IS GREATER THAN THE ROOT NODE DATA
-            printf("DEBUG:  Searching right branch for key:  %d \n", key);
+            printf("DEBUG:  Searching right  branch of node:  %d  for key:  %d \n", root_ptr->data, key);
 
             // RECURSIVELY SEARCH THE RIGHT BRANCH
-            root_ptr->right_ptr = insert_kiss_node(root_ptr->left_ptr, key);
+            root_ptr->right_ptr = insert_kiss_node(root_ptr->right_ptr, key);
         }
     }
 
@@ -84,14 +85,17 @@ void kiss_tree_test_driver()
     KissNode* root;
     int newKey;
 
-    newKey = 5;
+    newKey = 50;
     root = new_KissNode(newKey);
 
-    int intArray[] = {3, 1, 2, 7, 6, 9, 8, 11};
-    for (int index = 0; newKey < (sizeof(intArray)/ sizeof(int)); ++index)
+//    int intArray[] = {3, 1, 2, 7, 6, 9, 8, 11};
+    int intArray[] = {10, 20, 15, 18, 16, 17};
+    int max = (sizeof(intArray)/ sizeof(newKey));
+
+    for (int index = 0; index < max; ++index)
     {
         newKey =  intArray[index];
-        printf("DEBUG:  Inserting key:  %d  into root with key:  %d \n", newKey, root->data);
+        printf("DEBUG:  Inserting key:  %d \n", newKey);
         insert_kiss_node(root, newKey);
     }
 
