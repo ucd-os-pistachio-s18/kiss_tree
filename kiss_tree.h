@@ -18,6 +18,7 @@ void destroy_KissNode(KissNode*);
 KissNode* insert_kiss_node(KissNode*, int);
 void destroy_kiss_tree(KissNode*, KissNode*);
 
+void list_kiss_tree_inorder(KissNode*);
 
 
 void kiss_tree_test_driver();

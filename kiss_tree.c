@@ -22,7 +22,6 @@ KissNode* new_KissNode(int key)
 
 void destroy_KissNode(KissNode *node_ptr)
 {
-
     if (node_ptr->left_ptr != NULL || node_ptr->right_ptr != NULL)
     {
         printf("ERROR:  NODE HAS ACTIVE CHILDREN\n");
@@ -109,7 +108,6 @@ void destroy_kiss_tree(KissNode* node_ptr, KissNode* parent_ptr)
             parent_ptr->right_ptr = NULL;
         else
             printf("ERROR:  UNABLE TO SET CHILDREN NULL IN PARENT\n");
-
     }
 
     // BOTH CHILDREN NOW NULL; DELETE NODE
@@ -119,26 +117,48 @@ void destroy_kiss_tree(KissNode* node_ptr, KissNode* parent_ptr)
 }
 
 
+void list_kiss_tree_inorder(KissNode* root_ptr)
+{
+    if (root_ptr != NULL)
+    {
+        // GO LEFT
+        if (root_ptr->left_ptr != NULL)
+            list_kiss_tree_inorder(root_ptr->left_ptr);
+
+        // DO STUFF
+        printf("OUTPUT:  Node data:  %d \n", root_ptr->data);
+
+        // GO RIGHT
+        if (root_ptr->right_ptr != NULL)
+            list_kiss_tree_inorder(root_ptr->right_ptr);
+    }
+}
+
+
 void kiss_tree_test_driver()
 {
-    KissNode* root;
+    KissNode* root_ptr;
     int newKey;
 
 //    int intArray[] = {3, 1, 2, 7, 6, 9, 8, 11};
 //    int intArray[] = {50, 10, 20, 15, 18, 16, 17};
     int intArray[] = {4,2,1,3,6,5,7};
 //    int intArray[] = {4,2,1,3};
+//    int intArray[] = {5,5,5,5};
 
-    root = new_KissNode(intArray[0]);
+    root_ptr = new_KissNode(intArray[0]);
 
     int max = (sizeof(intArray)/ sizeof(newKey));
     for (int index = 1; index < max; ++index)
     {
         newKey =  intArray[index];
         printf("DEBUG:  Inserting key:  %d \n", newKey);
-        insert_kiss_node(root, newKey);
+        insert_kiss_node(root_ptr, newKey);
     }
 
+    printf("\nDEBUG:  Outputting tree in order: \n\n");
+    list_kiss_tree_inorder(root_ptr);
+
     printf("\nDEBUG:  Destroying tree...\n\n");
-    destroy_kiss_tree(root, NULL);
+    destroy_kiss_tree(root_ptr, NULL);
 }
